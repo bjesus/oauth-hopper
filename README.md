@@ -11,7 +11,7 @@ OAuth Hopper exposes OAuth2 services behind normal [Basic Access Authentication]
 ##### Setup
 
 1. Create a new Cloudflare Worker
-2. Under "Settings", "Variables", Create the following variables:
+2. Under "Settings", "Variables", Create the following Environment Variables:
    - `CLIENT_ID` - Your OAuth2 Client ID
    - `CLIENT_SECRET` Your OAuth2 Client Secret
    - `HOSTNAME` - The hostname of the resource you're trying to hop over. For example, Google's one is `apidata.googleusercontent.com`
@@ -19,4 +19,7 @@ OAuth Hopper exposes OAuth2 services behind normal [Basic Access Authentication]
    - `REFRESH_TOKEN` - Your latest refresh token
    - `USERNAME` - The username you want to connect with
    - `PASSWORD` - The password you want to use when connecting
-3. Copy the content of [index.js](index.js) to your worker
+3. Create a new Workers KV namespace, and under "KV Namespace Bindings" map it to a variable called `KEYS`
+4. In the the KV namespace, create a key called `access_token` with the following JSON value: `{"token":"XYZ","expiry":0}` (replace `XYZ` with your latest access token)
+5. Copy the content of [index.js](index.js) to your worker
+6. Connect to the resource using the URL of your Worker - OAuth Hopper will proxy the resource for you while hopping over OAuth!
